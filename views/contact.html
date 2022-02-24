@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product</title>
+    <title>Contact us</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/product.css">
     
@@ -14,21 +14,25 @@
         <nav class="main-header_nav">
             <ul class="main-header_item-list">
                 <li class="main-header_item"><a href="/">Shop</a></li>
-                <li class="main-header_item"><a class="active" href="/admin/add-product" >Add Product</a></li>
-                <li class="main-header_item"><a href="/contact">Contact Us</a></li>
+                <li class="main-header_item"><a href="/admin/add-product" >Add Product</a></li>
+                <li class="main-header_item"><a class="active" href="/contact">Contact Us</a></li>
 
             </ul>
         </nav>
     </header>
 
     <main>
-        <form class="product-form" action="/admin/add-product" method="post">
+        <form class="product-form" action="/" method="post">
             <div class="form-control">
-                <label for="title">Title</label>
+                <label for="title">Your Name</label>
                 <input type="text" name="title" id="title">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email">
+                <label>Your Message</label>
+                <textarea name="message" id="" cols="30" rows="10"></textarea>
             </div>
             
-            <button type="submit">Add Product</button>
+            <button type="submit">Submit</button>
         </form>
     </main>
 </body>
