@@ -1,3 +1,5 @@
+// const { response } = require("express");
+
 const cart_items = document.querySelector('#cart .cart-items');
 
 const parentNode = document.getElementById('music-content');
@@ -15,9 +17,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     <div class="image-container">
                         <img class="prod-images" src=${product.imageUrl} alt="">
                     </div>
-                                    <div class="prod-details">
+                     <div class="prod-details">
                         <span>$<span>${product.price}</span></span>
-                        <button class="shop-item-button" type='button'>ADD TO CART</button>
+                        <button class="shop-item-button" type='button' onClick="addToCart(${product.id})">ADD TO CART</button>
                     </div>
                 </div>`
             parentNode.innerHTML += productHtml;
@@ -27,7 +29,31 @@ window.addEventListener('DOMContentLoaded', () => {
 
 })
 
-document.addEventListener('click',(e)=>{
+function addToCart(productId){
+    axios.post('http://localhost:3000/cart' , {productId: productId})
+        .then(response => {
+            if(response.status === 200){
+                notifyUsers(response.data.message);
+            }
+        })
+        .catch(err => {
+            notifyUsers(err.data.message);
+        })
+}
+
+function notifyUsers(message){
+    const container = document.getElementById('container');
+    const notification = document.createElement('div');
+    notification.style.backgroundColor = iserror ? 'red' : 'green';
+    notification.classList.add('notification');
+    notification.innerHTML = `<h4>${message}<h4>`;
+    container.appendChild(notification);
+    setTimeout(()=>{
+        notification.remove();
+    },2500)
+}
+
+window.addEventListener('click',(e)=>{
 
     if (e.target.className=='shop-item-button'){
         const prodId = Number(e.target.parentNode.parentNode.id.split('-')[1]);

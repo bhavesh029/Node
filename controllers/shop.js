@@ -82,9 +82,9 @@ exports.postCart = (req, res, next) => {
     })
     .then(products => {
       let product;
-      if (products.length > 0) {
-        product = products[0];
-      }
+      // if (products.length > 0) {
+      //   product = products[0];
+      // }
 
       if (product) {
         const oldQuantity = product.cartItem.quantity;
@@ -99,9 +99,11 @@ exports.postCart = (req, res, next) => {
       });
     })
     .then(() => {
-      res.redirect('/cart');
+      res.status(200).json({sucess:true, message: "Successfully added"})
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      res.status(500).json({sucess: false, message: "Error occured"})
+    });
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
