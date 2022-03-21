@@ -1,7 +1,4 @@
-// const { response } = require("express");
-
 const cart_items = document.querySelector('#cart .cart-items');
-
 const parentNode = document.getElementById('music-content');
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -34,12 +31,16 @@ function addToCart(productId){
         .then(response => {
             if(response.status === 200){
                 notifyUsers(response.data.message);
+            } else{
+                throw new Error();
             }
         })
-        .catch(err => {
-            notifyUsers(err.data.message);
+        .catch((errMsg) => {
+            notifyUsers(errMsg);
         })
 }
+
+
 
 function notifyUsers(message){
     const container = document.getElementById('container');
@@ -70,11 +71,10 @@ window.addEventListener('click',(e)=>{
 
     }
     if (e.target.className=='cart-btn-bottom' || e.target.className=='cart-bottom' || e.target.className=='cart-holder'){
-        axios.get('http://localhost:3000/cart').then(carProducts => {
-            showProductsInCart(carProducts.data);
-            document.querySelector('#cart').style = "display:block;"
-
-        })
+        const cartContainer = document.getElementById('cart');
+        cartContainer.innerHTML = ``
+        getCartDetails();
+        
     }
     if (e.target.className=='cancel'){
         document.querySelector('#cart').style = "display:none;"
@@ -133,4 +133,23 @@ function showNotification(message, iserror){
 function removeElementFromCartDom(prodId){
         document.getElementById(`in-cart-album-${prodId}`).remove();
         showNotification('Succesfuly removed product')
+}
+
+function getCartDetails(){
+    axios.get('http://localhost:3000/cart')
+        .then(response => {
+            if(response.status === 200){
+                response.data.products.forEach(product => {
+                    const cartContainer = document.getElementById('cart');
+                    cartContainer.innerHTML += `<li>${product.title} - ${product.cartItem.quantity} - ${product.price}</li>`
+                })
+                document.querySelector('#cart').style = "display:block;"
+            }else {
+                throw new Error('Something went Wrong')
+            }
+            //console.log(response);
+        })
+        .catch(error => {
+            notifyUsers(error);
+        })
 }
