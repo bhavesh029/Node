@@ -1,15 +1,50 @@
 const Product = require('../models/product');
 const Cart = require('../models/cart');
 
+const items_per_page = 2;
+
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  const page=+req.query.page || 1;
+  var totalitems=0;
+  
+Product.count() //it is not working but 
+  .then(numproducts=>{
+
+    totalitems=numproducts;
+    return Product.findAll({offset:(page-1)*items_per_page,
+      limit:items_per_page})
+  })
+  // ------------------
+  // i want to send this data to front end to use for page numbers
+  
+
+
+  //====================
+  
+    
     .then(products => {
-      res.json({ products, sucess: true})
+     
+  const hasnextpage=items_per_page*page<totalitems;
+  const haspreviouspage=page>1;
+  const nextpage=page+1;
+  const previouspage=page-1;
+  const lastpage=Math.ceil(totalitems/items_per_page)
+  const obj={
+    totalitems:totalitems,
+    currentpage:page,
+    hasnextpage:hasnextpage,
+    haspreviouspage:haspreviouspage,
+    nextpage:nextpage,
+    previouspage:previouspage,
+    lastpage:lastpage
+  
+  }
+      res.json({products ,success:true,obj})
       // res.render('shop/product-list', {
       //   prods: products,
       //   pageTitle: 'All Products',
       //   path: '/products'
-      //});
+      // });
     })
     .catch(err => {
       console.log(err);
@@ -37,6 +72,7 @@ exports.getProduct = (req, res, next) => {
     })
     .catch(err => console.log(err));
 };
+
 
 exports.getIndex = (req, res, next) => {
   Product.findAll()
