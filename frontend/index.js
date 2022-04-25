@@ -16,10 +16,10 @@ container.addEventListener('click',(e)=>{
            productID:id1
        }
         axios
-        .post('http://localhost:3000/cart',obj)
+        .post('http://54.227.72.77/:3000/cart',obj)
         
         axios
-        .get("http://localhost:3000/cart").then((products)=>{
+        .get("http://54.227.72.77/:3000/cart").then((products)=>{
             console.log(products.data.products)
             let cartproducts=products.data.products
            
@@ -93,7 +93,7 @@ container.addEventListener('click',(e)=>{
     if(e.target.className=="page"){
         const reqpage=e.target.id;
         axios
-        .get(`http://localhost:3000/products/?page=${reqpage}`).then((data)=>{
+        .get(`http://54.227.72.77/:3000/products/?page=${reqpage}`).then((data)=>{
             const products=data.data.products;
             const pages=data.data.obj;
             // console.log(products)
@@ -182,7 +182,7 @@ container.addEventListener('click',(e)=>{
 })
 window.addEventListener('DOMContentLoaded', (event) => {
     axios
-    .get("http://localhost:3000/products/?page=1").then((data)=>{
+    .get("http://54.227.72.77/:3000/products/?page=1").then((data)=>{
         const products=data.data.products;
         const pages=data.data.obj;
         console.log(pages.currentpage)
@@ -265,7 +265,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     }).catch(err=>console.log(err))
     axios
-        .get("http://localhost:3000/cart").then((products)=>{
+        .get("http://54.227.72.77/:3000/cart").then((products)=>{
             console.log(products.data.products)
             let cartproducts=products.data.products
            
